@@ -1,0 +1,57 @@
+#include <stdio.h>
+
+// Function to calculate the greatest common divisor (GCD) using Euclidean algorithm
+int gcd(int a, int b) {
+    if (b == 0)
+        return a;
+    return gcd(b, a % b);
+}
+
+// Function to calculate the modular inverse using the extended Euclidean algorithm
+int mod_inverse(int a, int m) {
+    int m0 = m;
+    int x0 = 0, x1 = 1;
+
+    if (m == 1)
+        return 0;
+
+    while (a > 1) {
+        // q is the quotient
+        int q = a / m;
+        int t = m;
+
+        // m is the remainder now, process same as Euclidean algorithm
+        m = a % m;
+        a = t;
+
+        // Update x0 and x1
+        t = x0;
+        x0 = x1 - q * x0;
+        x1 = t;
+    }
+
+    // Make x1 positive if needed
+    if (x1 < 0)
+        x1 += m0;
+
+    return x1;
+}
+
+int main() {
+    int a, m;
+
+    printf("Enter a: ");
+    scanf("%d", &a);
+    
+    printf("Enter m: ");
+    scanf("%d", &m);
+
+    if (gcd(a, m) != 1) {
+        printf("Modular inverse does not exist.\n");
+    } else {
+        int inverse = mod_inverse(a, m);
+        printf("The modular inverse of %d mod %d is %d\n", a, m, inverse);
+    }
+
+    return 0;
+}
